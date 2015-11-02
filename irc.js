@@ -22,6 +22,7 @@ c.on('pm', (f, t, m) => {
 	}
 
 	let mode = match[1];
+	let modename;
 	let cmd = match[2];
 	let args = match[3] === undefined ? [] : match[3].split(' ');
 
@@ -32,11 +33,13 @@ c.on('pm', (f, t, m) => {
 		case 'o':
 		case '0':
 			mode = 0;
+			modename = 'osu';
 			break;
 		case 'taiko':
 		case 't':
 		case '1':
 			mode = 1;
+			modename = 'taiko';
 			break;
 		case 'ctb':
 		case 'catchthebeat':
@@ -44,6 +47,7 @@ c.on('pm', (f, t, m) => {
 		case 'c':
 		case '2':
 			mode = 2;
+			modename = 'ctb';
 			break;
 		case 'mania':
 		case 'osumania':
@@ -51,6 +55,7 @@ c.on('pm', (f, t, m) => {
 		case 'm':
 		case '3':
 			mode = 3;
+			modename = 'mania';
 			break;
 		default:
 			if (debug) console.error('[CMD -> ' + f + '] unrecognised osu mode');
@@ -61,7 +66,7 @@ c.on('pm', (f, t, m) => {
 		case 'pp':
 		case 'ppplz':
 		case 'p':
-			if (debug) console.error('[CMD -> ' + f + '] !ppplz');
+			if (debug) console.error('[CMD -> ' + f + '] ' + modename + '!ppplz');
 			pp.pp(f, mode).then((t) => {
 				if (debug) console.error('[MSG -> ' +f + '] ' + t);
 				c.say(f, t);
@@ -70,28 +75,32 @@ c.on('pm', (f, t, m) => {
 		case 'w':
 		case 'watch':
 			let fm;
-			if (debug) console.error('[CMD -> ' + f + '] !watch');
+			let watchmodename;
 			switch ((args[0] || 'watch').toLowerCase()) {
 				case 'watch':
 				case 'w':
 				case 'notries':
 				case 'n':
 					fm = fmt.notries;
+					watchmodename = 'notries';
 					break;
 				case 'tries':
 				case 't':
 					fm = fmt.tries;
+					watchmodename = 'tries';
 					break;
 				case 'pbs':
 				case 'pb':
 				case 'p':
 					fm = fmt.pbs;
+					watchmodename = 'pbs';
 					break;
 				default:
 					if (debug) console.error('[CMD -> ' + f + '] unrecognised !watch mode');
 					c.say(f, args[0] + ' is not a !watch mode');
 					return;
 			}
+			if (debug) console.error('[CMD -> ' + f + '] ' + modename + '!watch ' + watchmodename);
 			pp.watch(f, mode, fm, (t) => {
 				if (debug) console.error('[MSG -> ' + f + '] ' + t);
 				c.say(f, t);
