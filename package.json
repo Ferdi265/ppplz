@@ -1,0 +1,14 @@
+{
+	"name": "ppplz",
+	"description": "irc bot for the osu!bancho server",
+	"dependencies": {
+		"continuation-local-storage": "^3.1.4",
+		"irc": "^0.4.0",
+		"request-promise": "^1.0.2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Ferdi265/ppplz"
+	},
+	"license": "GPL-3.0"
+}

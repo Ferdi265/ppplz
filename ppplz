@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# passwords, and config
+. ./ppplz_env
+# run ppplz
+node ./irc.js
