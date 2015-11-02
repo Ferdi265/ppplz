@@ -7,7 +7,7 @@ const fmt = require('./fmt.js');
 const c = new irc.Client('irc.ppy.sh', process.env.PPJS_USERNAME, {
 	userName: process.env.PPJS_USERNAME,
 	password: process.env.PPJS_IRCPASS,
-	showErrors: true,
+	showErrors: false,
 	floodProtection: true,
 	floodProtectionDelay: 2000,
 	autoConnect: false
@@ -121,9 +121,19 @@ c.on('pm', (f, t, m) => {
 	}
 });
 c.on('error', (m) => {
-	console.error(m);
+	switch (m.command) {
+		case 'err_nosuchnick':
+			if (pp.watching(m.args[1])) {
+				pp.unwatch(m.args[1], (t) => {
+					if (debug) console.error('[INF -> ' + m.args[1] + '] Stopped watching, user is offline');
+				});
+			}
+			break;
+		default:
+			console.error('[ERR]', m);
+	}
 });
 c.on('motd', () => {
-	if (debug) console.error('Connected')
+	if (debug) console.error('[INF] Connected')
 });
 c.connect();

@@ -4,7 +4,7 @@ const osu = require('./osu.js')
 const fmt = require('./fmt.js');
 
 let data = {};
-let watching = {};
+let watchdata = {};
 
 const pp = (username, mode, fm) => {
 	mode = mode || 0;
@@ -102,46 +102,50 @@ const pp = (username, mode, fm) => {
 	}));
 };
 const iterate = (username, mode, cb) => {
-	if (!watching[username]) {
+	if (!watchdata[username]) {
 		return cb('Stopped watching');
 	}
-	pp(username, mode, watching[username].fm).then((t) => {
+	pp(username, mode, watchdata[username].fm).then((t) => {
 		if (t !== '') {
 			cb(t);
 		}
-		clearTimeout(watching[username].timeout);
-		watching[username].timeout = setTimeout(unwatch.bind(undefined, username, cb), 1e3 * 60 * 15);
+		clearTimeout(watchdata[username].timeout);
+		watchdata[username].timeout = setTimeout(unwatch.bind(undefined, username, cb), 1e3 * 60 * 15);
 		setTimeout(iterate.bind(undefined, username, mode, cb), 5000);
 	});
 };
 const unwatch = (username, cb) => {
-	if (!watching[username]) {
+	if (!watchdata[username]) {
 		return cb('Not watching');
 	}
-	clearTimeout(watching[username].timeout);
-	delete watching[username];
+	clearTimeout(watchdata[username].timeout);
+	delete watchdata[username];
 };
 const watch = (username, mode, fm, cb) => {
 	mode = mode || 0;
 	fm = fm || fmt.watch;
 
-	if (watching[username]) {
+	if (watchdata[username]) {
 		return cb('Already watching');
 	}
-	watching[username] = {
+	watchdata[username] = {
 		fm: fm
 	};
+	cb('Started watching');
 	pp(username, mode, fmt.user).then((t) => {
-		cb('Started watching');
 		if (t !== '') {
 			cb(t);
 		}
 		iterate(username, mode, cb);
 	});
 };
+const watching = (username) => {
+	return Boolean(watchdata[username]);
+};
 
 module.exports = {
 	pp: pp,
 	unwatch: unwatch,
-	watch: watch
+	watch: watch,
+	watching: watching
 };
