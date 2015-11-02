@@ -26,7 +26,7 @@ c.on('pm', (f, t, m) => {
 	let cmd = match[2];
 	let args = match[3] === undefined ? [] : match[3].split(' ');
 
-	switch (mode) {
+	switch (mode.toLowerCase()) {
 		case '':
 		case 'osu':
 		case 'osu!':
@@ -62,7 +62,7 @@ c.on('pm', (f, t, m) => {
 			c.say(f, mode + ' is not an osu game mode');
 			return;
 	}
-	switch (cmd) {
+	switch (cmd.toLowerCase()) {
 		case 'pp':
 		case 'ppplz':
 		case 'p':
