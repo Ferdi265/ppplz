@@ -81,7 +81,7 @@ const fmtpp = (user, recent, beatmap, score, bestrank, userdata) => {
 		(score === undefined ? '' : 'New PB! ') +
 		(bestrank === undefined ? '' : '#' + bestrank + ' of your top plays! ') +
 		(recent === undefined ? 'No recent plays.' : 'Achieved ' + recent.rating + ' on [https://osu.ppy.sh/b/' + beatmap.id + ' ' + beatmap.artist + ' - ' + beatmap.title + ' [' + beatmap.difficultyName + ']' + fmtmods(recent) + ']. ') +
-		(score === undefined ? '' : 'Raw PP: ' + score.pp.toFixed(2) + '. ') +
+		(score === undefined || score.pp !== score.pp ? '' : 'Raw PP: ' + score.pp.toFixed(2) + '. ') +
 		(bestrank === undefined ? '' : 'Weighted PP: ' + (score.pp * Math.pow(0.95, bestrank - 1)).toFixed(2) + '. ') +
 		fmtuser(user, recent, beatmap, score, bestrank, userdata) 
 	);
