@@ -4,8 +4,8 @@ const irc = require('irc');
 const pp = require('./pp.js');
 const fmt = require('./fmt.js');
 
-const c = new irc.Client('irc.ppy.sh', 'theFerdi265', {
-	userName: 'theFerdi265',
+const c = new irc.Client('irc.ppy.sh', process.env.PPJS_USERNAME, {
+	userName: process.env.PPJS_USERNAME,
 	password: process.env.PPJS_IRCPASS,
 	showErrors: true,
 	floodProtection: true,
