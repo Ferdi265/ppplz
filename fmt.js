@@ -77,23 +77,23 @@ const fmtmods = (score) => {
 	return modStr;
 };
 const fmtpp = (user, recent, beatmap, score, bestrank, userdata) => {
-		return (
+	return (
 		(score === undefined ? '' : 'New PB! ') +
 		(bestrank === undefined ? '' : '#' + bestrank + ' of your top plays! ') +
-		'Achieved ' + recent.rating + ' on [https://osu.ppy.sh/b/' + beatmap.id + ' ' + beatmap.artist + ' - ' + beatmap.title + ' [' + beatmap.difficultyName + ']' + fmtmods(recent) + ']. ' +
+		(recent === undefined ? 'No recent plays.' : 'Achieved ' + recent.rating + ' on [https://osu.ppy.sh/b/' + beatmap.id + ' ' + beatmap.artist + ' - ' + beatmap.title + ' [' + beatmap.difficultyName + ']' + fmtmods(recent) + ']. ') +
 		(score === undefined ? '' : 'Raw PP: ' + score.pp.toFixed(2) + '. ') +
 		(bestrank === undefined ? '' : 'Weighted PP: ' + (score.pp * Math.pow(0.95, bestrank - 1)).toFixed(2) + '. ') +
 		fmtuser(user, recent, beatmap, score, bestrank, userdata) 
 	);
 };
 const fmttries = (user, recent, beatmap, score, bestrank, userdata) => {
-	if (osu.scoreEqual(recent, userdata.recent)) {
+	if (recent === undefined || osu.scoreEqual(recent, userdata.recent)) {
 		return '';
 	}
 	return fmtpp(user, recent, beatmap, score, bestrank, userdata);
 };
 const fmtnotries = (user, recent, beatmap, score, bestrank, userdata) => {
-	if (recent.rating === 'F') {
+	if (recent === undefined || recent.rating === 'F') {
 		return '';
 	}
 	return fmttries(user, recent, beatmap, score, bestrank, userdata);

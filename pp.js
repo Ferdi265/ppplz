@@ -34,7 +34,7 @@ const pp = (username, mode, fm) => {
 		});
 	}).then((r) => {
 		if (r.length === 0) {
-			throw Error('No recent plays');
+			return undefined;
 		}
 		recent = r[0];
 		if (osu.scoreEqual(data[user.id].recent, r[0])) {
@@ -76,12 +76,15 @@ const pp = (username, mode, fm) => {
 			limit: 50
 		});
 	}).then((b) => b.some((j) => {
+		if (recent === undefined) {
+			return;
+		}
 		if (osu.scoreEqual(recent, j)) {
 			bestrank = j.rank;
 			return true;
 		}
 	})).then(() => {
-		if (osu.scoreEqual(recent, userdata.recent)) {
+		if (recent !== undefined && osu.scoreEqual(recent, userdata.recent)) {
 			beatmap = userdata.beatmap;
 			score = userdata.score;
 			bestrank = userdata.bestrank;
