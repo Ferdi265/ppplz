@@ -99,6 +99,7 @@ const pp = (username, mode, fm) => {
 	}).catch((e) => {
 		f('An error occurred: ' +  e);
 		console.error(e.stack);
+		if (watching(username) && fm !== fmt.pp) unwatch(username, cb);
 	}));
 };
 const iterate = (username, mode, cb) => {
