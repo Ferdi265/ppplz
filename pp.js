@@ -15,6 +15,7 @@ const pp = (username, mode, fm) => {
 	let beatmap;
 	let score;
 	let bestrank;
+	let userdata;
 
 	return new Promise((f) => osu.user({
 		u: username,
@@ -23,6 +24,8 @@ const pp = (username, mode, fm) => {
 	}).then((u) => {
 		user = u;
 		data[u.id] = data[u.id] || {};
+		data[u.id][mode] = data[u.id][mode] || {};
+		userdata = data[u.id][mode];
 		return osu.recent({
 			u: username,
 			type: 'string',
@@ -78,18 +81,18 @@ const pp = (username, mode, fm) => {
 			return true;
 		}
 	})).then(() => {
-		if (osu.scoreEqual(recent, data[user.id].recent)) {
-			beatmap = data[user.id].beatmap;
-			score = data[user.id].score;
-			bestrank = data[user.id].bestrank;
+		if (osu.scoreEqual(recent, userdata.recent)) {
+			beatmap = userdata.beatmap;
+			score = userdata.score;
+			bestrank = userdata.bestrank;
 		}
-		f(fm(user, recent, beatmap, score, bestrank, data[user.id]));
-		data[user.id].pp = user.pp;
-		data[user.id].rank = user.rank;
-		data[user.id].recent = recent;
-		data[user.id].beatmap = beatmap;
-		data[user.id].score = score;
-		data[user.id].bestrank = bestrank;
+		f(fm(user, recent, beatmap, score, bestrank, userdata));
+		userdata.pp = user.pp;
+		userdata.rank = user.rank;
+		userdata.recent = recent;
+		userdata.beatmap = beatmap;
+		userdata.score = score;
+		userdata.bestrank = bestrank;
 	}).catch((e) => {
 		f('An error occurred: ' +  e);
 		console.error(e.stack);
