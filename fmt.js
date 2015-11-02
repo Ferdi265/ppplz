@@ -107,9 +107,10 @@ const fmtpbs = (user, recent, beatmap, score, bestrank, userdata) => {
 const fmtuser = (user, recent, beatmap, score, bestrank, userdata) => {
 	let relPP = user.pp - (userdata.pp || user.pp);
 	let relRank = user.rank - (userdata.rank || user.rank);
-	return (relPP === 0 && relRank === 0 ? '' :
-		(relPP > 0 ? 'Gained ' + relPP.toFixed(2) + ' pp!' : 'Lost ' + (-1 * relPP).toFixed(2) + ' pp.') + ' ' +
-		(relRank < 0 ? 'Rose ' + (-1 * relRank) + ' ranks!' : 'Fell ' + relRank + ' ranks.')
+	return (
+		(relPP === 0 ? '' : relPP > 0 ? 'Gained ' + relPP.toFixed(2) + ' pp!' : 'Lost ' + (-1 * relPP).toFixed(2) + ' pp.') +
+		(relPP !== 0 && relRank !== 0 ? ' ' : '') +
+		(relRank === 0 ? '' : relRank < 0 ? 'Rose ' + (-1 * relRank) + ' ranks!' : 'Fell ' + relRank + ' ranks.')
 	);
 };
 
